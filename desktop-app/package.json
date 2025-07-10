@@ -1,0 +1,32 @@
+{
+  "name": "enterprise-file-transfer-desktop",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "keywords": [
+    "file-transfer",
+    "tauri",
+    "enterprise"
+  ],
+  "author": "Enterprise File Transfer Team",
+  "license": "MIT",
+  "description": "Enterprise-grade cross-platform file transfer application",
+  "dependencies": {
+    "@tauri-apps/api": "^2.6.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.12"
+  }
+}
