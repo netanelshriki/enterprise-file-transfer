@@ -5,7 +5,6 @@ use quinn::rustls::pki_types::{CertificateDer, PrivateKeyDer, ServerName};
 use quinn::rustls::client::danger::{ServerCertVerifier, ServerCertVerified};
 use std::net::{SocketAddr, IpAddr, Ipv4Addr};
 use std::sync::Arc;
-use std::net::UdpSocket;
 use log::{info, error, debug, warn};
 use tokio_tungstenite::{connect_async, tungstenite::Message};
 use futures_util::{SinkExt, StreamExt};
@@ -113,7 +112,7 @@ impl NetworkManager {
         let register_msg = ClientMessage::Register {
             name: "Desktop App".to_string(),
             device_type: "desktop".to_string(),
-            public_key: base64::encode(b"placeholder_public_key"),
+            public_key: base64::prelude::BASE64_STANDARD.encode(b"placeholder_public_key"),
         };
         
         let msg_text = serde_json::to_string(&register_msg)?;
@@ -216,7 +215,7 @@ impl NetworkManager {
             
             let mut send_stream = connection.open_uni().await?;
             send_stream.write_all(&file_data).await?;
-            send_stream.finish().await?;
+            send_stream.finish()?;
             
             info!("File sent successfully via QUIC");
             Ok(())
