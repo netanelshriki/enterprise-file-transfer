@@ -117,7 +117,7 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GHB_TOKEN }}
       with:
         tag_name: v1.0.0-${{ github.run_number }}
         release_name: Enterprise File Transfer v1.0.0-${{ github.run_number }}
@@ -162,7 +162,7 @@ jobs:
     - name: Upload Linux DEB
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GHB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: linux-packages/Enterprise File Transfer_1.0.0_amd64.deb
@@ -172,7 +172,7 @@ jobs:
     - name: Upload Linux RPM
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GHB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: linux-packages/Enterprise File Transfer-1.0.0-1.x86_64.rpm
@@ -182,7 +182,7 @@ jobs:
     - name: Upload Windows MSI
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GHB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: windows-packages/Enterprise File Transfer_1.0.0_x64_en-US.msi
@@ -192,7 +192,7 @@ jobs:
     - name: Upload Android APK
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GHB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: android-packages/app-release-unsigned.apk
