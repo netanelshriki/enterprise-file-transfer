@@ -26,6 +26,14 @@ public class Device {
         this.type = DeviceType.UNKNOWN;
         this.lastSeen = System.currentTimeMillis();
     }
+    
+    public boolean isLocalDevice() {
+        return ipAddress != null && !ipAddress.isEmpty();
+    }
+    
+    public boolean isInternetDevice() {
+        return !isLocalDevice();
+    }
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
