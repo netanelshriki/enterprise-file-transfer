@@ -1,0 +1,200 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main, devin/* ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-desktop:
+    strategy:
+      matrix:
+        platform: [ubuntu-20.04, windows-latest]
+    
+    runs-on: ${{ matrix.platform }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: desktop-app/package-lock.json
+    
+    - name: Setup Rust
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: ${{ matrix.platform == 'ubuntu-20.04' && 'x86_64-unknown-linux-gnu' || 'x86_64-pc-windows-msvc' }}
+    
+    - name: Install Linux dependencies
+      if: matrix.platform == 'ubuntu-20.04'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libayatana-appindicator3-dev librsvg2-dev
+    
+    - name: Install Tauri CLI
+      run: cargo install tauri-cli
+    
+    - name: Install frontend dependencies
+      working-directory: desktop-app
+      run: npm ci
+    
+    - name: Build Tauri app (Linux)
+      if: matrix.platform == 'ubuntu-20.04'
+      working-directory: desktop-app
+      run: npm run tauri build -- --target x86_64-unknown-linux-gnu
+    
+    - name: Build Tauri app (Windows)
+      if: matrix.platform == 'windows-latest'
+      working-directory: desktop-app
+      run: npm run tauri build -- --target x86_64-pc-windows-msvc
+    
+    - name: Upload Linux artifacts
+      if: matrix.platform == 'ubuntu-20.04'
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-packages
+        path: |
+          desktop-app/src-tauri/target/release/bundle/deb/*.deb
+          desktop-app/src-tauri/target/release/bundle/rpm/*.rpm
+    
+    - name: Upload Windows artifacts
+      if: matrix.platform == 'windows-latest'
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-packages
+        path: |
+          desktop-app/src-tauri/target/release/bundle/msi/*.msi
+
+  build-android:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+    
+    - name: Grant execute permission for gradlew
+      working-directory: android-app
+      run: chmod +x gradlew
+    
+    - name: Build Android APK
+      working-directory: android-app
+      run: ./gradlew assembleRelease
+    
+    - name: Upload Android artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-packages
+        path: android-app/app/build/outputs/apk/release/*.apk
+
+  create-release:
+    needs: [build-desktop, build-android]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/devin/')
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+    
+    - name: Display structure of downloaded files
+      run: ls -la
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v1.0.0-${{ github.run_number }}
+        release_name: Enterprise File Transfer v1.0.0-${{ github.run_number }}
+        body: |
+          ## Enterprise File Transfer Release
+          
+          ### 🚀 Cross-Platform File Transfer Solution
+          
+          **Features:**
+          - ✅ Cross-platform support (Linux Desktop + Android Mobile)
+          - ✅ Enterprise-grade AES-256-GCM encryption
+          - ✅ Local network + Internet transfers via STUN/TURN
+          - ✅ Professional installers for all platforms
+          - ✅ Zero-configuration device discovery
+          
+          ### 📦 Installation Packages
+          
+          **Linux Desktop:**
+          - DEB package for Ubuntu/Debian systems
+          - RPM package for Red Hat/Fedora/CentOS systems
+          
+          **Windows Desktop:**
+          - MSI installer for Windows 10/11 (click-to-run, no configuration needed)
+          
+          **Android Mobile:**
+          - APK package for Android devices (enable "Install from unknown sources")
+          
+          ### 🔧 Quick Start
+          1. Download the appropriate package for your platform
+          2. Install using your system's package manager or by double-clicking
+          3. Launch the application - devices will be discovered automatically
+          4. Select files and target device to start secure transfers
+          
+          ### 🔒 Security
+          All transfers use end-to-end AES-256-GCM encryption with perfect forward secrecy.
+          
+          **Repository**: https://github.com/netanelshriki/enterprise-file-transfer
+          **Developer**: @netanelshriki
+        draft: false
+        prerelease: false
+    
+    - name: Upload Linux DEB
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: linux-packages/Enterprise File Transfer_1.0.0_amd64.deb
+        asset_name: Enterprise-File-Transfer-1.0.0-amd64.deb
+        asset_content_type: application/vnd.debian.binary-package
+    
+    - name: Upload Linux RPM
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: linux-packages/Enterprise File Transfer-1.0.0-1.x86_64.rpm
+        asset_name: Enterprise-File-Transfer-1.0.0-1.x86_64.rpm
+        asset_content_type: application/x-rpm
+    
+    - name: Upload Windows MSI
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: windows-packages/Enterprise File Transfer_1.0.0_x64_en-US.msi
+        asset_name: Enterprise-File-Transfer-1.0.0-x64.msi
+        asset_content_type: application/x-msi
+    
+    - name: Upload Android APK
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: android-packages/app-release-unsigned.apk
+        asset_name: Enterprise-File-Transfer-1.0.0-android.apk
+        asset_content_type: application/vnd.android.package-archive
