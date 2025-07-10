@@ -1,7 +1,10 @@
 package com.enterprise.filetransfer.service;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.IBinder;
 import android.util.Log;
 
 import com.enterprise.filetransfer.crypto.CryptoManager;
@@ -13,7 +16,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class FileTransferService {
+public class FileTransferService extends Service {
     private static final String TAG = "FileTransferService";
     
     private TransferProgressListener progressListener;
@@ -35,6 +38,16 @@ public class FileTransferService {
     public FileTransferService() {
         cryptoManager = new CryptoManager();
         networkManager = new NetworkManager();
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_NOT_STICKY;
     }
 
     public void setTransferProgressListener(TransferProgressListener listener) {

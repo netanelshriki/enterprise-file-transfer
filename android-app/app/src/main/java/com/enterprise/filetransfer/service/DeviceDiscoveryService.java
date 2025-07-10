@@ -1,5 +1,8 @@
 package com.enterprise.filetransfer.service;
 
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
 import android.util.Log;
 
 import com.enterprise.filetransfer.model.Device;
@@ -17,7 +20,7 @@ import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
 
-public class DeviceDiscoveryService {
+public class DeviceDiscoveryService extends Service {
     private static final String TAG = "DeviceDiscoveryService";
     private static final String SERVICE_TYPE = "_enterprise-transfer._tcp.local.";
     
@@ -30,6 +33,23 @@ public class DeviceDiscoveryService {
 
     public interface DeviceDiscoveryListener {
         void onDevicesDiscovered(List<Device> devices);
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        startDiscovery();
+        return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopDiscovery();
     }
 
     public void setDeviceDiscoveryListener(DeviceDiscoveryListener listener) {
