@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "Enterprise File Transfer",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "identifier": "com.enterprise.filetransfer",
   "build": {
     "frontendDist": "../dist",
@@ -13,10 +13,13 @@
     "windows": [
       {
         "title": "Enterprise File Transfer",
-        "width": 800,
-        "height": 600,
+        "width": 1000,
+        "height": 700,
+        "minWidth": 800,
+        "minHeight": 600,
         "resizable": true,
-        "fullscreen": false
+        "fullscreen": false,
+        "center": true
       }
     ],
     "security": {
@@ -25,13 +28,78 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["msi", "nsis", "deb", "rpm", "appimage"],
+    "identifier": "com.enterprise.filetransfer",
+    "publisher": "Enterprise Solutions",
+    "copyright": "Copyright © 2025 Enterprise Solutions",
+    "category": "Utility",
+    "shortDescription": "High-performance secure file transfer",
+    "longDescription": "Enterprise-grade file transfer application with end-to-end encryption, cross-platform support, and internet connectivity via STUN/TURN servers.",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "resources": [],
+    "externalBin": [],
+    "windows": {
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "http://timestamp.sectigo.com",
+      "wix": {
+        "language": ["en-US"],
+        "template": "main.wxs",
+        "fragmentPaths": [],
+        "componentGroupRefs": [],
+        "componentRefs": [],
+        "featureGroupRefs": [],
+        "featureRefs": [],
+        "mergeRefs": []
+      },
+      "nsis": {
+        "displayLanguageSelector": true,
+        "languages": ["English"],
+        "customLanguageFiles": {},
+        "template": "installer.nsi",
+        "headerImage": "icons/128x128.png",
+        "sidebarImage": "icons/128x128.png",
+        "installerIcon": "icons/icon.ico",
+        "installMode": "perMachine",
+        "allowDowngrades": false,
+        "deleteAppDataOnUninstall": false
+      }
+    },
+    "linux": {
+      "deb": {
+        "depends": ["libwebkit2gtk-4.0-37", "libgtk-3-0", "libayatana-appindicator3-1"],
+        "section": "utils",
+        "priority": "optional",
+        "maintainer": "Enterprise Solutions <support@enterprise.com>",
+        "homepage": "https://github.com/netanelshriki/enterprise-file-transfer"
+      },
+      "rpm": {
+        "depends": ["webkit2gtk3", "gtk3", "libappindicator-gtk3"],
+        "epoch": 0,
+        "release": "1"
+      },
+      "appimage": {
+        "bundleMediaFramework": false,
+        "files": {}
+      }
+    },
+    "macOS": {
+      "frameworks": [],
+      "minimumSystemVersion": "10.13",
+      "exceptionDomain": "",
+      "signingIdentity": null,
+      "providerShortName": null,
+      "entitlements": null
+    }
+  },
+  "plugins": {
+    "updater": {
+      "active": false
+    }
   }
 }

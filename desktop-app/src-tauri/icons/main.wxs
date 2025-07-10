@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product
+        Id="*"
+        Name="Enterprise File Transfer"
+        Language="1033"
+        Version="{{version}}"
+        Manufacturer="Enterprise Solutions"
+        UpgradeCode="{{upgrade_code}}">
+        
+        <Package InstallerVersion="450" Compressed="yes" InstallScope="perMachine" />
+        
+        <MajorUpgrade
+            Schedule="afterInstallInitialize"
+            DowngradeErrorMessage="A newer version of [ProductName] is already installed. Setup will now exit." />
+            
+        <MediaTemplate EmbedCab="yes" />
+        
+        <Feature
+            Id="MainApplication"
+            Title="Enterprise File Transfer"
+            Description="Main application files"
+            Level="1"
+            ConfigurableDirectory="APPLICATIONFOLDER"
+            AllowAdvertise="no"
+            Display="expand"
+            Absent="disallow">
+            
+            <ComponentGroupRef Id="MainApplicationGroup" />
+        </Feature>
+        
+        <Property Id="APPLICATIONFOLDER">
+            <RegistrySearch
+                Id="FindInstallLocation"
+                Root="HKCU"
+                Key="Software\Enterprise Solutions\Enterprise File Transfer"
+                Name="InstallLocation"
+                Type="raw" />
+        </Property>
+        
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="{{program_files_dir}}" Name="{{program_files_dir_name}}">
+                <Directory Id="APPLICATIONFOLDER" Name="Enterprise File Transfer">
+                    <Component Id="MainExecutable" Guid="*">
+                        <File
+                            Id="MainExecutableFile"
+                            Source="{{app_exe_source}}"
+                            KeyPath="yes"
+                            Checksum="yes" />
+                        
+                        <RegistryValue
+                            Root="HKCU"
+                            Key="Software\Enterprise Solutions\Enterprise File Transfer"
+                            Name="InstallLocation"
+                            Type="string"
+                            Value="[APPLICATIONFOLDER]"
+                            KeyPath="no" />
+                    </Component>
+                </Directory>
+            </Directory>
+            
+            <Directory Id="ProgramMenuFolder" Name="Programs">
+                <Directory Id="ProgramMenuDir" Name="Enterprise File Transfer">
+                    <Component Id="ProgramMenuDir" Guid="*">
+                        <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+                        <RegistryValue
+                            Root="HKCU"
+                            Key="Software\Enterprise Solutions\Enterprise File Transfer"
+                            Name="ProgramMenuDir"
+                            Type="integer"
+                            Value="1"
+                            KeyPath="yes" />
+                    </Component>
+                </Directory>
+            </Directory>
+            
+            <Directory Id="DesktopFolder" Name="Desktop" />
+        </Directory>
+        
+        <DirectoryRef Id="ProgramMenuDir">
+            <Component Id="ApplicationShortcut" Guid="*">
+                <Shortcut
+                    Id="ApplicationStartMenuShortcut"
+                    Name="Enterprise File Transfer"
+                    Description="High-performance secure file transfer"
+                    Target="[APPLICATIONFOLDER]{{app_exe_name}}"
+                    WorkingDirectory="APPLICATIONFOLDER" />
+                    
+                <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+                <RegistryValue
+                    Root="HKCU"
+                    Key="Software\Enterprise Solutions\Enterprise File Transfer"
+                    Name="StartMenuShortcut"
+                    Type="integer"
+                    Value="1"
+                    KeyPath="yes" />
+            </Component>
+        </DirectoryRef>
+        
+        <DirectoryRef Id="DesktopFolder">
+            <Component Id="ApplicationDesktopShortcut" Guid="*">
+                <Shortcut
+                    Id="ApplicationDesktopShortcut"
+                    Name="Enterprise File Transfer"
+                    Description="High-performance secure file transfer"
+                    Target="[APPLICATIONFOLDER]{{app_exe_name}}"
+                    WorkingDirectory="APPLICATIONFOLDER" />
+                    
+                <RegistryValue
+                    Root="HKCU"
+                    Key="Software\Enterprise Solutions\Enterprise File Transfer"
+                    Name="DesktopShortcut"
+                    Type="integer"
+                    Value="1"
+                    KeyPath="yes" />
+            </Component>
+        </DirectoryRef>
+        
+        <ComponentGroup Id="MainApplicationGroup">
+            <ComponentRef Id="MainExecutable" />
+            <ComponentRef Id="ApplicationShortcut" />
+            <ComponentRef Id="ApplicationDesktopShortcut" />
+            <ComponentRef Id="ProgramMenuDir" />
+        </ComponentGroup>
+    </Product>
+</Wix>
