@@ -29,7 +29,6 @@
   "bundle": {
     "active": true,
     "targets": ["msi", "nsis", "deb", "rpm", "appimage"],
-    "identifier": "com.enterprise.filetransfer",
     "publisher": "Enterprise Solutions",
     "copyright": "Copyright © 2025 Enterprise Solutions",
     "category": "Utility",
@@ -48,35 +47,17 @@
       "digestAlgorithm": "sha256",
       "timestampUrl": "http://timestamp.sectigo.com",
       "wix": {
-        "language": ["en-US"],
-        "template": "main.wxs",
-        "fragmentPaths": [],
-        "componentGroupRefs": [],
-        "componentRefs": [],
-        "featureGroupRefs": [],
-        "featureRefs": [],
-        "mergeRefs": []
+        "language": ["en-US"]
       },
       "nsis": {
-        "displayLanguageSelector": true,
-        "languages": ["English"],
-        "customLanguageFiles": {},
-        "template": "installer.nsi",
-        "headerImage": "icons/128x128.png",
-        "sidebarImage": "icons/128x128.png",
-        "installerIcon": "icons/icon.ico",
-        "installMode": "perMachine",
-        "allowDowngrades": false,
-        "deleteAppDataOnUninstall": false
+        "installMode": "perMachine"
       }
     },
     "linux": {
       "deb": {
         "depends": ["libwebkit2gtk-4.0-37", "libgtk-3-0", "libayatana-appindicator3-1"],
         "section": "utils",
-        "priority": "optional",
-        "maintainer": "Enterprise Solutions <support@enterprise.com>",
-        "homepage": "https://github.com/netanelshriki/enterprise-file-transfer"
+        "priority": "optional"
       },
       "rpm": {
         "depends": ["webkit2gtk3", "gtk3", "libappindicator-gtk3"],
@@ -84,14 +65,12 @@
         "release": "1"
       },
       "appimage": {
-        "bundleMediaFramework": false,
-        "files": {}
+        "bundleMediaFramework": false
       }
     },
     "macOS": {
       "frameworks": [],
       "minimumSystemVersion": "10.13",
-      "exceptionDomain": "",
       "signingIdentity": null,
       "providerShortName": null,
       "entitlements": null
