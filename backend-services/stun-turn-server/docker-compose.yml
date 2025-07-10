@@ -9,7 +9,7 @@ services:
       - "3478:3478/tcp"
       - "5349:5349/tcp"
       - "5349:5349/udp"
-      - "49152-65535:49152-65535/udp"
+      - "50000-50100:50000-50100/udp"
     volumes:
       - ./turnserver.conf:/etc/coturn/turnserver.conf:ro
     restart: unless-stopped
@@ -22,7 +22,7 @@ services:
       - "8080:8080"
     environment:
       - RUST_LOG=info
-      - DATABASE_URL=sqlite:signaling.db
+      - DATABASE_URL=sqlite:/app/data/signaling.db
       - BIND_ADDRESS=0.0.0.0:8080
     volumes:
       - signaling_data:/app/data

@@ -11,7 +11,12 @@ pub struct Database {
 
 impl Database {
     pub async fn new(database_url: &str) -> Result<Self> {
-        let pool = SqlitePool::connect(&format!("sqlite:{}", database_url)).await?;
+        let connection_string = if database_url.starts_with("sqlite:") {
+            database_url.to_string()
+        } else {
+            format!("sqlite:{}", database_url)
+        };
+        let pool = SqlitePool::connect(&connection_string).await?;
         Ok(Self { pool })
     }
     

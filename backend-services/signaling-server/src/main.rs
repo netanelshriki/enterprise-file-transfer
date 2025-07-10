@@ -65,7 +65,8 @@ async fn main() -> Result<()> {
     
     let args = Args::parse();
     
-    let db = Database::new(&args.database).await?;
+    let database_url = std::env::var("DATABASE_URL").unwrap_or(args.database);
+    let db = Database::new(&database_url).await?;
     db.migrate().await?;
     
     let (broadcast_tx, _) = broadcast::channel(1000);
