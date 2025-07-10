@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  coturn:
+    image: coturn/coturn:4.6.2
+    container_name: enterprise-turn-server
+    ports:
+      - "3478:3478/udp"
+      - "3478:3478/tcp"
+      - "5349:5349/tcp"
+      - "5349:5349/udp"
+      - "49152-65535:49152-65535/udp"
+    volumes:
+      - ./turnserver.conf:/etc/coturn/turnserver.conf:ro
+    restart: unless-stopped
+    command: ["-c", "/etc/coturn/turnserver.conf"]
+
+  signaling-server:
+    build: ../signaling-server
+    container_name: enterprise-signaling-server
+    ports:
+      - "8080:8080"
+    environment:
+      - RUST_LOG=info
+      - DATABASE_URL=sqlite:signaling.db
+      - BIND_ADDRESS=0.0.0.0:8080
+    volumes:
+      - signaling_data:/app/data
+    restart: unless-stopped
+    depends_on:
+      - coturn
+
+volumes:
+  signaling_data:
