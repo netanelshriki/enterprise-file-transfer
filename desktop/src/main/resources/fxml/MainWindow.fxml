@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.securetransfer.desktop.ui.MainController">
+   <top>
+      <VBox>
+         <MenuBar fx:id="menuBar">
+            <Menu mnemonicParsing="false" text="File">
+               <MenuItem mnemonicParsing="false" onAction="#handleAddFilesAction" text="Add Files..." />
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <MenuItem mnemonicParsing="false" onAction="#handleExitAction" text="Exit" />
+            </Menu>
+            <Menu mnemonicParsing="false" text="View">
+               <MenuItem mnemonicParsing="false" onAction="#handleRefreshAction" text="Refresh Devices" />
+            </Menu>
+            <Menu mnemonicParsing="false" text="Tools">
+               <MenuItem mnemonicParsing="false" onAction="#handleSettingsAction" text="Settings..." />
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <MenuItem mnemonicParsing="false" onAction="#handleAboutAction" text="About SecureTransfer" />
+            </Menu>
+         </MenuBar>
+         <ToolBar fx:id="toolBar">
+            <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#handleRefreshAction" text="Refresh" />
+            <Separator orientation="VERTICAL" />
+            <Button mnemonicParsing="false" onAction="#handleAddFilesAction" text="Add Files" />
+            <Separator orientation="VERTICAL" />
+            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#handleSettingsAction" text="Settings" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="statusLabel" text="Ready" />
+         </ToolBar>
+      </VBox>
+   </top>
+   <center>
+      <SplitPane dividerPositions="0.7" orientation="VERTICAL">
+         <VBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Available Devices" />
+               <Region HBox.hgrow="ALWAYS" />
+               <ProgressBar fx:id="discoveryProgress" prefWidth="100.0" />
+               <Label fx:id="discoveryLabel" text="Discovering..." />
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+            </HBox>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+               <FlowPane fx:id="deviceGrid" hgap="15.0" vgap="15.0">
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+                  </padding>
+               </FlowPane>
+            </ScrollPane>
+         </VBox>
+         <VBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Transfer Queue" />
+               <Region HBox.hgrow="ALWAYS" />
+               <Button mnemonicParsing="false" text="Clear All" />
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+            </HBox>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+               <VBox fx:id="transferQueue" spacing="5.0">
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+                  </padding>
+               </VBox>
+            </ScrollPane>
+         </VBox>
+      </SplitPane>
+   </center>
+   <bottom>
+      <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #f0f0f0; -fx-border-color: #d0d0d0; -fx-border-width: 1 0 0 0;">
+         <Label text="SecureTransfer v1.0.0" />
+         <Region HBox.hgrow="ALWAYS" />
+         <Label text="Ready for file transfers" />
+         <padding>
+            <Insets bottom="8.0" left="20.0" right="20.0" top="8.0" />
+         </padding>
+      </HBox>
+   </bottom>
+</BorderPane>

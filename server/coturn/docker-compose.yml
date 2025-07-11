@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  coturn:
+    build: .
+    ports:
+      # STUN/TURN ports
+      - "3478:3478/udp"
+      - "3478:3478/tcp"
+      - "5349:5349/udp"
+      - "5349:5349/tcp"
+      # RTP relay ports (adjust range as needed)
+      - "49152-49252:49152-49252/udp"
+    environment:
+      - EXTERNAL_IP=${EXTERNAL_IP:-127.0.0.1}
+    volumes:
+      - ./logs:/var/log/coturn
+      - ./certs:/etc/coturn/certs:ro
+    restart: unless-stopped
+    networks:
+      - coturn-network
+
+networks:
+  coturn-network:
+    driver: bridge

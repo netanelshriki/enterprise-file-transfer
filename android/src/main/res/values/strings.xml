@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SecureTransfer</string>
+    
+    <!-- Main Screen -->
+    <string name="nearby_devices">Nearby Devices</string>
+    <string name="no_devices_found">No devices found. Make sure other devices are running SecureTransfer and connected to the same network.</string>
+    <string name="recent_transfers">Recent Transfers</string>
+    <string name="no_recent_transfers">No recent transfers</string>
+    <string name="discovering_devices">Discovering devices…</string>
+    <string name="transferring_files">Transferring files…</string>
+    
+    <!-- Permissions -->
+    <string name="permissions_required">Permissions Required</string>
+    <string name="permissions_explanation">SecureTransfer needs storage and network permissions to discover devices and transfer files securely.</string>
+    <string name="grant_permissions">Grant Permissions</string>
+    
+    <!-- Share Screen -->
+    <string name="share_files">Share Files</string>
+    <string name="select_device">Select Device</string>
+    <string name="searching_devices">Searching for devices…</string>
+    <string name="sharing_text">Sharing text</string>
+    <string name="sharing_file">Sharing 1 file</string>
+    <string name="sharing_files">Sharing %d files</string>
+    
+    <!-- Device Status -->
+    <string name="device_online">Online</string>
+    <string name="device_offline">Offline</string>
+    <string name="device_busy">Busy</string>
+    
+    <!-- Transfer Status -->
+    <string name="transfer_pending">Pending</string>
+    <string name="transfer_in_progress">In Progress</string>
+    <string name="transfer_completed">Completed</string>
+    <string name="transfer_failed">Failed</string>
+    
+    <!-- Actions -->
+    <string name="send">Send</string>
+    <string name="cancel">Cancel</string>
+    <string name="retry">Retry</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    
+    <!-- Notifications -->
+    <string name="transfer_notification_title">File Transfer</string>
+    <string name="transfer_notification_text">Transferring files…</string>
+    <string name="discovery_notification_title">Device Discovery</string>
+    <string name="discovery_notification_text">Looking for nearby devices</string>
+    
+    <!-- Errors -->
+    <string name="error_no_permission">Permission denied</string>
+    <string name="error_network">Network error</string>
+    <string name="error_file_not_found">File not found</string>
+    <string name="error_transfer_failed">Transfer failed</string>
+    <string name="error_device_not_available">Device not available</string>
+</resources>

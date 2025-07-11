@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.securetransfer</groupId>
+    <artifactId>desktop</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>SecureTransfer Desktop</name>
+    <description>Cross-platform file transfer application for Windows and Linux</description>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <!-- Dependency versions -->
+        <javafx.version>21.0.1</javafx.version>
+        <okhttp.version>4.12.0</okhttp.version>
+        <netty.version>4.1.104.Final</netty.version>
+        <jitsi.webrtc.version>124.0.0</jitsi.webrtc.version>
+        <bouncycastle.version>1.77</bouncycastle.version>
+        <h2.version>2.2.224</h2.version>
+        <logback.version>1.4.14</logback.version>
+        <jackson.version>2.16.1</jackson.version>
+        <protobuf.version>3.25.1</protobuf.version>
+        <junit.version>5.10.1</junit.version>
+        <mockito.version>5.8.0</mockito.version>
+        
+        <!-- Plugin versions -->
+        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+        <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+        <jpackage.maven.plugin.version>1.6.0</jpackage.maven.plugin.version>
+        <maven.surefire.plugin.version>3.2.2</maven.surefire.plugin.version>
+    </properties>
+
+    <dependencies>
+        <!-- JavaFX -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <!-- Networking -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+
+        <!-- WebRTC - Temporarily commented out due to dependency resolution issues -->
+        <!-- 
+        <dependency>
+            <groupId>org.jitsi</groupId>
+            <artifactId>webrtc</artifactId>
+            <version>${jitsi.webrtc.version}</version>
+        </dependency>
+        -->
+
+        <!-- Security -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>${bouncycastle.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk18on</artifactId>
+            <version>${bouncycastle.version}</version>
+        </dependency>
+
+        <!-- Database -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+
+        <!-- JSON Processing -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Protocol Buffers -->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>${protobuf.version}</version>
+        </dependency>
+
+        <!-- mDNS -->
+        <dependency>
+            <groupId>org.jmdns</groupId>
+            <artifactId>jmdns</artifactId>
+            <version>3.5.8</version>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                    <compilerArgs>
+                        <arg>--enable-preview</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <!-- JavaFX Plugin -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>${javafx.maven.plugin.version}</version>
+                <configuration>
+                    <mainClass>com.securetransfer.desktop.SecureTransferApp</mainClass>
+                </configuration>
+            </plugin>
+
+            <!-- Surefire Plugin for Testing -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <argLine>--enable-preview</argLine>
+                </configuration>
+            </plugin>
+
+            <!-- JPackage Plugin -->
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>${jpackage.maven.plugin.version}</version>
+                <configuration>
+                    <name>SecureTransfer</name>
+                    <appVersion>${project.version}</appVersion>
+                    <vendor>SecureTransfer</vendor>
+                    <destination>target/installer</destination>
+                    <input>target</input>
+                    <mainClass>com.securetransfer.desktop.SecureTransferApp</mainClass>
+                    <mainJar>desktop-${project.version}.jar</mainJar>
+                    <javaOptions>
+                        <option>--enable-preview</option>
+                    </javaOptions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- Windows MSI Profile -->
+        <profile>
+            <id>windows-msi</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <configuration>
+                            <type>MSI</type>
+                            <name>SecureTransfer</name>
+                            <vendor>SecureTransfer</vendor>
+                            <copyright>Copyright © 2025 SecureTransfer</copyright>
+                            <description>Secure cross-platform file transfer application</description>
+                            <licenseFile>../LICENSE</licenseFile>
+                            <winMenu>true</winMenu>
+                            <winDirChooser>true</winDirChooser>
+                            <winShortcut>true</winShortcut>
+                            <winPerUserInstall>false</winPerUserInstall>
+                            <winMenuGroup>SecureTransfer</winMenuGroup>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Linux DEB Profile -->
+        <profile>
+            <id>linux-deb</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <configuration>
+                            <type>DEB</type>
+                            <name>securetransfer</name>
+                            <vendor>SecureTransfer</vendor>
+                            <copyright>Copyright © 2025 SecureTransfer</copyright>
+                            <description>Secure cross-platform file transfer application</description>
+                            <licenseFile>../LICENSE</licenseFile>
+                            <linuxPackageName>securetransfer</linuxPackageName>
+                            <linuxDebMaintainer>SecureTransfer &lt;support@securetransfer.com&gt;</linuxDebMaintainer>
+                            <linuxMenuGroup>Network</linuxMenuGroup>
+                            <linuxShortcut>true</linuxShortcut>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Linux AppImage Profile -->
+        <profile>
+            <id>linux-appimage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.panteleyev</groupId>
+                        <artifactId>jpackage-maven-plugin</artifactId>
+                        <configuration>
+                            <type>APP_IMAGE</type>
+                            <name>SecureTransfer</name>
+                            <vendor>SecureTransfer</vendor>
+                            <copyright>Copyright © 2025 SecureTransfer</copyright>
+                            <description>Secure cross-platform file transfer application</description>
+                            <destination>target/appimage</destination>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

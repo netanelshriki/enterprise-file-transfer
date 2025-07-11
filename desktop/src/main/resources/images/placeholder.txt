@@ -1,0 +1,33 @@
+# Image Resources Placeholder
+
+This directory will contain the application icons and UI images.
+The following images should be added for a complete implementation:
+
+## Application Icons
+- app-icon.png (256x256) - Main application icon
+- app-icon-16.png (16x16) - Small icon for taskbar
+- app-icon-32.png (32x32) - Medium icon
+- app-icon-48.png (48x48) - Large icon
+
+## Device Icons
+- laptop-icon.png (48x48) - Laptop/Windows device icon
+- phone-icon.png (48x48) - Mobile/Android device icon  
+- desktop-icon.png (48x48) - Desktop/Linux device icon
+- device-icon.png (48x48) - Generic device icon
+
+## File Type Icons
+- file-icon.png (32x32) - Generic file icon
+- pdf-icon.png (32x32) - PDF document icon
+- doc-icon.png (32x32) - Word document icon
+- image-icon.png (32x32) - Image file icon
+- video-icon.png (32x32) - Video file icon
+- audio-icon.png (32x32) - Audio file icon
+- archive-icon.png (32x32) - Archive file icon
+
+## UI Icons
+- send-icon.png (24x24) - Send button icon
+- refresh-icon.png (24x24) - Refresh button icon
+- settings-icon.png (24x24) - Settings button icon
+- add-icon.png (24x24) - Add files button icon
+
+For development purposes, the application will use fallback icons or create simple colored rectangles when these images are not found.
